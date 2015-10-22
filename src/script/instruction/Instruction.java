@@ -1,6 +1,5 @@
 package script.instruction;
 
-import java.awt.Graphics;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -18,11 +17,9 @@ public abstract class Instruction implements Serializable {
 	private final String name;
 	private int startX, startY, endX, endY;
 	
-	public Instruction(Script script, String name, int startX, int startY, int endX, int endY) {
+	public Instruction(Script script, String name, int endX, int endY) {
 		this.script = script;
 		this.name = name;
-		this.startX = startX;
-		this.startY = startY;
 		this.endX = endX;
 		this.endY = endY;
 	}
@@ -61,11 +58,14 @@ public abstract class Instruction implements Serializable {
 		endY = y;
 	}
 	
+	public boolean isMove() {
+		return startX != endX || startY != endY;
+	}
+	
 	public abstract List<String> getImports();
 	public abstract List<String> getGlobalVars();
 	public abstract List<String> getInitCode();
 	public abstract List<String> getRunCode();
-	public abstract void drawVisual(Graphics graphics, int x, int y);
 	public abstract void onCreate(int x, int y);
 	
 	private static List<String> list(String...code) {
