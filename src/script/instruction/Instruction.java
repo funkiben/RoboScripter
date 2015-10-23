@@ -3,7 +3,7 @@ package script.instruction;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +67,7 @@ public abstract class Instruction implements Serializable {
 	public abstract List<String> getInitCode();
 	public abstract List<String> getRunCode();
 	public abstract void onCreate(int x, int y);
+	public abstract void onChangeField(Field field, Object newVal);
 	
 	private static List<String> list(String...code) {
 		return Arrays.asList(code);
@@ -77,13 +78,13 @@ public abstract class Instruction implements Serializable {
 	}
 	
 	private static Map<Field,GUISetting> getGUISettings(Class<?> clazz) {
-		Map<Field,GUISetting> map = new HashMap<Field,GUISetting>();
+		Map<Field,GUISetting> map = new LinkedHashMap<Field,GUISetting>();
 		Field[] fields = clazz.getFields();
 		
 		for (Field field : fields) {
 			GUISetting setting = field.getAnnotation(GUISetting.class);
 			if (setting != null) {
-				if (Object.class.isAssignableFrom(field.getType())) {
+				if (!Object.class.isAssignableFrom(field.getType())) {
 					map.put(field, setting);
 				} else {
 					map.putAll(getGUISettings(field.getType()));

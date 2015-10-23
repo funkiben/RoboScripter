@@ -32,6 +32,10 @@ public class Main {
 		cx -= 1500;
 		cy += 3000;
 		script.addInstruction(new TestInstruction(script, cx, cy));
+		cx -= 1000;
+		script.addInstruction(new TestInstruction(script, cx, cy));
+		cy -= 1000;
+		script.addInstruction(new TestInstruction(script, cx, cy));
 		script.addInstruction(new TestInstruction(script, cx, cy));
 		
 		scripter.getWindow().getScriptDisplayFrame().setScript(script);

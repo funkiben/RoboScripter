@@ -84,7 +84,7 @@ public class FunkiFrame {
 		}
 		
 		if (showName) {
-			g.drawString(name, x + (w / 2) - (g.getFontMetrics().stringWidth(name) / 2), y - 4);
+			drawCenteredString(g, name, x + (w / 2), y - 4);
 		}
 		
 		draw(g, x, y, w, h);
@@ -92,19 +92,19 @@ public class FunkiFrame {
 		
 	}
 	
-	int getX(FunkiWindow window) {
+	public int getX(FunkiWindow window) {
 		return (int) (xAlign * window.getWidth()) - (getWidth(window) / 2);
 	}
 	
-	int getY(FunkiWindow window) {
+	public int getY(FunkiWindow window) {
 		return (int) (yAlign * window.getHeight()) - (getHeight(window) / 2);
 	}
 	
-	int getWidth(FunkiWindow window) {
+	public int getWidth(FunkiWindow window) {
 		return (int) (width * window.getWidth());
 	}
 	
-	int getHeight(FunkiWindow window) {
+	public int getHeight(FunkiWindow window) {
 		return (int) (height * window.getHeight());
 	}
 	
@@ -155,6 +155,11 @@ public class FunkiFrame {
 	
 	public void draw(Graphics g, int x, int y, int width, int height) {
 		
+	}
+	
+	public static void drawCenteredString(Graphics g, String s, int x, int y) {
+		g.setColor(Color.BLACK);
+		g.drawString(s, x - (g.getFontMetrics().stringWidth(s) / 2), y);
 	}
 
 }

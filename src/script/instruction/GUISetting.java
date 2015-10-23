@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface GUISetting {
-	public int min() default Integer.MIN_VALUE;
-	public int max() default Integer.MAX_VALUE;
+	public double min() default Integer.MIN_VALUE;
+	public double max() default Integer.MAX_VALUE;
+	public boolean canEdit() default true;
 }

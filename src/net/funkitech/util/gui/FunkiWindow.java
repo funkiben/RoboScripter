@@ -19,7 +19,7 @@ public class FunkiWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private final List<FunkiFrame> frames = new ArrayList<FunkiFrame>();
-	
+
 	private final DrawCanvas canvas;
 	
 	public FunkiWindow(String name, int width, int height) {
@@ -38,10 +38,12 @@ public class FunkiWindow extends JFrame {
 		
 	}
 	
+	@Override
 	public int getWidth() {
 		return canvas.getWidth();
 	}
 	
+	@Override
 	public int getHeight() {
 		return canvas.getHeight();
 	}
@@ -61,7 +63,7 @@ public class FunkiWindow extends JFrame {
 	}
 	
 	public void draw(Graphics g) {
-		g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
+		g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		
 		for (FunkiFrame frame : frames) {
 			frame.draw(g, this);
@@ -72,12 +74,46 @@ public class FunkiWindow extends JFrame {
 		for (FunkiFrame frame : frames) {
 			frame.mouseEvent(cx, cy, btn, this, id);
 		}
+		
+		if (id == 0) {
+			onPressMouse(cx, cy, btn);
+		} else if (id == 1) {
+			onReleaseMouse(cx, cy, btn);
+		} else if (id == 2) {
+			onMoveMouse(cx, cy);
+		}
 	}
 	
 	private void invokeKeyEvents(char key, int id) {
 		for (FunkiFrame frame : frames) {
 			frame.keyEvent(key, id);
 		}
+		
+		if (id == 0) {
+			onPressKey(key);
+		} else if (id == 1) {
+			onReleaseKey(key);
+		}
+	}
+	
+	public void onPressMouse(int x, int y, int button) {
+		
+	}
+	
+	public void onReleaseMouse(int x, int y, int button) {
+		
+	}
+	
+	public void onMoveMouse(int x, int y) {
+		
+	}
+	
+	public void onPressKey(char key) {
+		
+	}
+	
+	public void onReleaseKey(char key) {
+		
 	}
 	
 	private class EventListener implements MouseListener, MouseMotionListener, KeyListener {
@@ -124,7 +160,7 @@ public class FunkiWindow extends JFrame {
 		
 	}
 	
-	private class DrawCanvas extends JPanel {
+	public class DrawCanvas extends JPanel {
 		
 		private static final long serialVersionUID = 6333028362943156947L;
 		
