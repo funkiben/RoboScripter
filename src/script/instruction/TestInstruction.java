@@ -1,6 +1,5 @@
 package script.instruction;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import script.Script;
@@ -51,8 +50,8 @@ public class TestInstruction extends Instruction {
 	}
 
 	@Override
-	public void onChangeField(Field field, Object newVal) {
-		if (field.getName() == "integer" || field.getName() == "decimal") {
+	public void onChangeSetting(GUISettingField setting, Object newVal) {
+		if (setting.getName() == "integer" || setting.getName() == "decimal") {
 			nonEditable = integer * decimal;
 		}
 		

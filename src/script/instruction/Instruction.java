@@ -2,10 +2,9 @@ package script.instruction;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import script.Script;
 
@@ -67,33 +66,41 @@ public abstract class Instruction implements Serializable {
 	public abstract List<String> getInitCode();
 	public abstract List<String> getRunCode();
 	public abstract void onCreate(int x, int y);
-	public abstract void onChangeField(Field field, Object newVal);
+	public abstract void onChangeSetting(GUISettingField field, Object newVal);
 	
 	private static List<String> list(String...code) {
 		return Arrays.asList(code);
 	}
 	
-	public Map<Field,GUISetting> getGUISettings() {
-		return getGUISettings(getClass());
+	public List<GUISettingField> getGUISettings() {
+		try {
+			return getGUISettings(this, this);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
-	private static Map<Field,GUISetting> getGUISettings(Class<?> clazz) {
-		Map<Field,GUISetting> map = new LinkedHashMap<Field,GUISetting>();
-		Field[] fields = clazz.getFields();
+	private static List<GUISettingField> getGUISettings(Object inst, Instruction instruction) throws IllegalArgumentException, IllegalAccessException {
+		List<GUISettingField> list = new ArrayList<GUISettingField>();
+		Field[] fields = inst.getClass().getFields();
 		
 		for (Field field : fields) {
 			GUISetting setting = field.getAnnotation(GUISetting.class);
 			if (setting != null) {
 				if (!Object.class.isAssignableFrom(field.getType())) {
-					map.put(field, setting);
+					list.add(new GUISettingField(setting, field, inst, instruction));
 				} else {
-					map.putAll(getGUISettings(field.getType()));
+					Object obj = field.get(inst);
+					if (obj != null) {
+						list.addAll(getGUISettings(obj, instruction));
+					}
 				}
 			}
 			
 		}
 		
-		return map;
+		return list;
 	}
 
 }

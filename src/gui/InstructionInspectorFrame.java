@@ -5,11 +5,8 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -19,7 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.funkitech.util.gui.FunkiFrame;
-import script.instruction.GUISetting;
+import script.instruction.GUISettingField;
 import script.instruction.Instruction;
 
 public class InstructionInspectorFrame extends FunkiFrame {
@@ -46,25 +43,25 @@ public class InstructionInspectorFrame extends FunkiFrame {
 		setName("Instruction " + instruction.getName());
 		this.instruction = instruction;
 
-		Map<Field, GUISetting> settings = instruction.getGUISettings();
-		for (Field f : settings.keySet()) {
-			if (!settings.get(f).canEdit()) {
+		List<GUISettingField> settings = instruction.getGUISettings();
+		for (GUISettingField f : settings) {
+			if (!f.getData().canEdit()) {
 				inputs.add(null);
 				continue;
 			}
 			
-			if (f.getType() == Double.TYPE || f.getType() == Integer.TYPE) {
+			if (f.getField().getType() == Double.TYPE || f.getField().getType() == Integer.TYPE) {
 				JTextField input = new JTextField();
-				input.setText(getValue(f).toString());
-				TextBoxEventListener el = new TextBoxEventListener(input, settings.get(f), f);
+				input.setText(f.getValue().toString());
+				TextBoxEventListener el = new TextBoxEventListener(input, f);
 				input.addCaretListener(el);
 				input.addActionListener(el);
 				inputs.add(input);
 				window.getCanvas().add(input);
 				input.setSize(100, 20);
-			} else if (f.getType() == Boolean.TYPE) {
+			} else if (f.getField().getType() == Boolean.TYPE) {
 				JCheckBox input = new JCheckBox();
-				input.setSelected((boolean) getValue(f));
+				input.setSelected((boolean) f.getValue());
 				input.addChangeListener(new CheckBoxEventListener(input, f));
 				inputs.add(input);
 				window.getCanvas().add(input);
@@ -94,52 +91,28 @@ public class InstructionInspectorFrame extends FunkiFrame {
 			return;
 		}
 		
-		Map<Field, GUISetting> settings = instruction.getGUISettings();
+		List<GUISettingField> settings = instruction.getGUISettings();
 			
 		int i, sx, sy;
 		String str;
 		
 		i = 0;
 			
-		for (Field f : settings.keySet()) {
+		for (GUISettingField f : settings) {
 			str = f.getName() + ": ";
 			sx = x + 10;
 			sy = y + 20 + (i * 30);
-			if (settings.get(f).canEdit()) {
+			if (f.getData().canEdit()) {
 				inputs.get(i).setLocation(sx + g.getFontMetrics().stringWidth(str), sy - 15);
 				inputs.get(i).setSize(100, 20);
 			} else {
-				str += getValue(f);
+				str += f.getValue().toString();
 			}
 			g.drawString(str, sx, sy);
 			i++;
 		}
 
 		
-	}
-	
-	public Object getValue(Field f) {
-		try {
-			return f.get(instruction);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public void setValue(Field f, Object val) {
-		try {
-			if (f.getType() == Integer.TYPE) {
-				f.setInt(instruction, (int) val);
-			} else if (f.getType() == Double.TYPE) {
-				f.setDouble(instruction, (double) val);
-			} else if (f.getType() == Boolean.TYPE) {
-				f.setBoolean(instruction, (boolean) val);
-			}
-			instruction.onChangeField(f, val);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
@@ -177,13 +150,11 @@ public class InstructionInspectorFrame extends FunkiFrame {
 	class TextBoxEventListener implements CaretListener, ActionListener {
 		
 		private final JTextField input;
-		private final GUISetting settingData;
-		private final Field field;
+		private final GUISettingField setting;
 		
-		public TextBoxEventListener(JTextField input, GUISetting settingData, Field field) {
+		public TextBoxEventListener(JTextField input, GUISettingField field) {
 			this.input = input;
-			this.settingData = settingData;
-			this.field = field;
+			this.setting = field;
 		}
 
 		@Override
@@ -194,7 +165,7 @@ public class InstructionInspectorFrame extends FunkiFrame {
 				str = "0";
 			}
 			
-			if (field.getType() == Integer.TYPE) {
+			if (setting.getField().getType() == Integer.TYPE) {
 				
 				if (!isInteger(str)) {
 					input.setBackground(Color.red);
@@ -203,15 +174,15 @@ public class InstructionInspectorFrame extends FunkiFrame {
 					
 					int i = Integer.parseInt(str);
 			
-					i = (int) Math.max(i, settingData.min());
-					i = (int) Math.min(i, settingData.max());
+					i = (int) Math.max(i, setting.getData().min());
+					i = (int) Math.min(i, setting.getData().max());
 					
-					setValue(field, i);
+					setting.setValue(i);
 					input.setBackground(Color.white);
 					
 				}
 				
-			} else if (field.getType() == Double.TYPE) {
+			} else if (setting.getField().getType() == Double.TYPE) {
 				
 				if (!isDouble(str)) {
 					input.setBackground(Color.red);
@@ -219,10 +190,10 @@ public class InstructionInspectorFrame extends FunkiFrame {
 					
 					double i = Double.parseDouble(str);
 					
-					i = Math.max(i, settingData.min());
-					i = Math.min(i, settingData.max());
+					i = Math.max(i, setting.getData().min());
+					i = Math.min(i, setting.getData().max());
 					
-					setValue(field, i);
+					setting.setValue(i);
 					input.setBackground(Color.white);
 				}
 			}
@@ -231,7 +202,7 @@ public class InstructionInspectorFrame extends FunkiFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			input.setText(getValue(field).toString());
+			input.setText(setting.getValue().toString());
 		}
 		
 	}
@@ -239,16 +210,16 @@ public class InstructionInspectorFrame extends FunkiFrame {
 	class CheckBoxEventListener implements ChangeListener {
 		
 		private final JCheckBox input;
-		private final Field field;
+		private final GUISettingField setting;
 		
-		public CheckBoxEventListener(JCheckBox input, Field field) {
+		public CheckBoxEventListener(JCheckBox input, GUISettingField field) {
 			this.input = input;
-			this.field = field;
+			this.setting = field;
 		}
 
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			setValue(field, input.isSelected());
+			setting.setValue(input.isSelected());
 		}
 		
 	}
