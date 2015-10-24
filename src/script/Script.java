@@ -1,5 +1,6 @@
 package script;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class Script implements Serializable {
 	private static final long serialVersionUID = -1697694307389461759L;
 	
 	private String name;
+	private File saveFile = null;
 	private final List<Instruction> instructions = new ArrayList<Instruction>();
 	
 	public Script(String name) {
@@ -27,6 +29,18 @@ public class Script implements Serializable {
 	
 	public List<Instruction> getInstructions() {
 		return instructions;
+	}
+	
+	public void changeSaveFile(File file) {
+		if (this.saveFile != null) {
+			saveFile.delete();
+		}
+		
+		saveFile = file;
+	}
+	
+	public File getSaveFile() {
+		return saveFile;
 	}
 	
 	public void addInstruction(Instruction instruction) {

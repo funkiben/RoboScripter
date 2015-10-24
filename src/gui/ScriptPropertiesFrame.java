@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +40,9 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 		window.getCanvas().add(exportButton);
 		
 		nameInput = new JTextField();
-		nameInput.addCaretListener(new NameInputEventListener());
+		NameInputEventListener el = new NameInputEventListener();
+		nameInput.addCaretListener(el);
+		nameInput.addActionListener(el);
 		window.getCanvas().add(nameInput);
 		
 		setScript(null);
@@ -91,7 +94,7 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 	
 	@Override
 	public void onPressMouse(int cx, int cy, int btn) {
-		changeName(nameInput.getText());
+		new NameInputEventListener().check();
 	}
 	
 	class SaveButtonActionListener implements ActionListener {
@@ -99,6 +102,7 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			scriptDB.save(script);
+			window.getScriptDBFrame().updateList();
 		}
 		
 	}
@@ -112,11 +116,35 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 		
 	}
 	
-	class NameInputEventListener implements CaretListener {
+	class NameInputEventListener implements CaretListener, ActionListener {
 
+		void check() {
+			if (nameInput.getText().isEmpty()) {
+				nameInput.setBackground(Color.red);
+				saveButton.setEnabled(false);
+				return;
+			}
+			
+			for (Script s : window.getScripter().getScriptDB().getScripts()) {
+				if (s.getName().equals(nameInput.getText()) && s != script) {
+					nameInput.setBackground(Color.red);
+					saveButton.setEnabled(false);
+					return;
+				}
+			}
+			nameInput.setBackground(Color.white);
+			saveButton.setEnabled(true);
+			changeName(nameInput.getText());
+		}
+		
 		@Override
 		public void caretUpdate(CaretEvent e) {
-			changeName(nameInput.getText());
+			check();
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			check();
 		}
 		
 	}

@@ -88,6 +88,18 @@ public class ScriptDB {
 		return null;
 	}
 	
+	public Script duplicate(Script script) {
+		save(script);
+		
+		Script dupe = read(script.getSaveFile());
+		dupe.setName(dupe.getName() + "Copy");
+		
+		dupe.changeSaveFile(getFile(dupe));
+		save(dupe);
+		
+		return dupe;
+	}
+	
 	public void saveAll() {
 		for (Script script : scripts) {
 			save(script);
@@ -100,6 +112,8 @@ public class ScriptDB {
 		}
 		
 		File file = getFile(script);
+		
+		script.changeSaveFile(file);
 		
 		FileOutputStream fos;
 		ObjectOutputStream oos;
