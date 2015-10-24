@@ -17,7 +17,7 @@ public class GUISettingField {
 	}
 	
 	public String getName() {
-		return (inst != instruction ? (inst.getClass().getSimpleName() + "_") : "") + field.getName();
+		return inst != instruction ? inst.getClass().getSimpleName() + "_" + field.getName() : field.getName();
 	}
 	
 	public Object getValue() {

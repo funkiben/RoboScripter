@@ -68,7 +68,7 @@ public abstract class Instruction implements Serializable {
 	public abstract void onCreate(int x, int y);
 	public abstract void onChangeSetting(GUISettingField field, Object newVal);
 	
-	private static List<String> list(String...code) {
+	protected static List<String> list(String...code) {
 		return Arrays.asList(code);
 	}
 	

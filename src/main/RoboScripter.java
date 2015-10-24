@@ -1,7 +1,9 @@
 package main;
 
 import gui.RoboScripterWindow;
+import script.Script;
 import script.ScriptDB;
+import script.compiler.ScriptCompiler;
 
 public class RoboScripter {
 	
@@ -21,6 +23,12 @@ public class RoboScripter {
 	
 	public RoboScripterWindow getWindow() {
 		return window;
+	}
+	
+	public ScriptCompiler compile(Script script) {
+		ScriptCompiler compiler = new ScriptCompiler(script);
+		compiler.compile();
+		return compiler;
 	}
 	
 }

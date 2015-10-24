@@ -25,7 +25,9 @@ public class ScriptCompiler {
 	
 	public void compile() {
 		try {
-			File file = new File(script.getName() + ".java");
+			File dir = new File("exports");
+			dir.mkdir();
+			File file = new File(dir, script.getName() + ".java");
 			
 			file.createNewFile();
 			

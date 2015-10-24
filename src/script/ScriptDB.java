@@ -88,13 +88,17 @@ public class ScriptDB {
 		return null;
 	}
 	
-	public void save() {
+	public void saveAll() {
 		for (Script script : scripts) {
 			save(script);
 		}
 	}
 	
-	private void save(Script script) {
+	public void save(Script script) {
+		if (!scripts.contains(script)) {
+			scripts.add(script);
+		}
+		
 		File file = getFile(script);
 		
 		FileOutputStream fos;

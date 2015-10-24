@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import main.RoboScripter;
@@ -18,7 +17,7 @@ public class ScriptDisplayFrame extends FunkiFrame {
 	private final RoboScripterWindow window;
 
 	public ScriptDisplayFrame(RoboScripterWindow window) {
-		super("Board", 0.33f, 0.5f, 0.60f, 0.95f);
+		super("Board", 0.33f, 0.57f, 0.60f, 0.80f);
 		this.window = window;
 
 		setShowName(true);
@@ -32,6 +31,7 @@ public class ScriptDisplayFrame extends FunkiFrame {
 
 	public void setScript(Script script) {
 		this.script = script;
+		window.getInstructionInspectorFrame().clearInstruction();
 	}
 
 	@Override

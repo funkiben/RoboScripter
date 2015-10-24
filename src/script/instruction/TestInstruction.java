@@ -6,6 +6,8 @@ import script.Script;
 
 public class TestInstruction extends Instruction {
 
+	private static final long serialVersionUID = -6336451377740513969L;
+	
 	@GUISetting(canEdit = false)
 	public double nonEditable = 4;
 	@GUISetting
@@ -21,26 +23,22 @@ public class TestInstruction extends Instruction {
 
 	@Override
 	public List<String> getImports() {
-		// TODO Auto-generated method stub
-		return null;
+		return list();
 	}
 
 	@Override
 	public List<String> getGlobalVars() {
-		// TODO Auto-generated method stub
-		return null;
+		return list();
 	}
 
 	@Override
 	public List<String> getInitCode() {
-		// TODO Auto-generated method stub
-		return null;
+		return list();
 	}
 
 	@Override
 	public List<String> getRunCode() {
-		// TODO Auto-generated method stub
-		return null;
+		return list();
 	}
 
 	@Override
@@ -51,7 +49,7 @@ public class TestInstruction extends Instruction {
 
 	@Override
 	public void onChangeSetting(GUISettingField setting, Object newVal) {
-		if (setting.getName() == "integer" || setting.getName() == "decimal") {
+		if (setting.getName().equals("integer") || setting.getName().equals("decimal")) {
 			nonEditable = integer * decimal;
 		}
 		
