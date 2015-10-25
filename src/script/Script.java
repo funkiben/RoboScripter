@@ -46,7 +46,7 @@ public class Script implements Serializable {
 	public void addInstruction(Instruction instruction) {
 		if (instructions.size() > 0) {
 			Instruction prevInstruction = instructions.get(instructions.size() - 1);
-			instruction.setStart(prevInstruction.getEndX(), prevInstruction.getEndY());
+			instruction.setPrevInstruction(prevInstruction);
 		}
 		instructions.add(instruction);
 	}

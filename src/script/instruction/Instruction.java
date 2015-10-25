@@ -14,7 +14,10 @@ public abstract class Instruction implements Serializable {
 	
 	private final Script script;
 	private final String name;
-	private int startX, startY, endX, endY;
+	private Instruction prevInstruction = null;
+	@GUISetting(min = 0, max = 10000)
+	private int endX, endY;
+	private boolean isMove = false;
 	
 	public Instruction(Script script, String name, int endX, int endY) {
 		this.script = script;
@@ -32,24 +35,24 @@ public abstract class Instruction implements Serializable {
 	}
 	
 	public int getStartX() {
-		return startX;
+		return prevInstruction != null ? prevInstruction.endX : endX;
 	}
 	
 	public int getStartY() {
-		return startY;
+		return prevInstruction != null ? prevInstruction.endY : endY;
+	}
+	
+	public void setPrevInstruction(Instruction instruction) {
+		isMove = instruction.getEndX() != endX || instruction.getEndY() != endY;
+		prevInstruction = instruction;
 	}
 	
 	public int getEndX() {
-		return endX;
+		return !isMove() && prevInstruction != null ? prevInstruction.endX : endX;
 	}
 	
 	public int getEndY() {
-		return endY;
-	}
-	
-	public void setStart(int x, int y) {
-		startX = x;
-		startY = y;
+		return !isMove() && prevInstruction != null ? prevInstruction.endY : endY;
 	}
 	
 	public void setEnd(int x, int y) {
@@ -58,7 +61,7 @@ public abstract class Instruction implements Serializable {
 	}
 	
 	public boolean isMove() {
-		return startX != endX || startY != endY;
+		return isMove;
 	}
 	
 	public abstract List<String> getImports();
@@ -83,9 +86,18 @@ public abstract class Instruction implements Serializable {
 	
 	private static List<GUISettingField> getGUISettings(Object inst, Instruction instruction) throws IllegalArgumentException, IllegalAccessException {
 		List<GUISettingField> list = new ArrayList<GUISettingField>();
-		Field[] fields = inst.getClass().getFields();
+		Field[] fields = inst.getClass().getDeclaredFields();
+		
+		if (inst == instruction) {
+			int i = fields.length;
+			fields = Arrays.copyOf(fields, Instruction.class.getDeclaredFields().length + i);
+			for (Field f : Instruction.class.getDeclaredFields()) {
+				fields[i++] = f;
+			}
+		}
 		
 		for (Field field : fields) {
+			field.setAccessible(true);
 			GUISetting setting = field.getAnnotation(GUISetting.class);
 			if (setting != null) {
 				if (!Object.class.isAssignableFrom(field.getType())) {

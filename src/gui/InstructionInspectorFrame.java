@@ -45,7 +45,7 @@ public class InstructionInspectorFrame extends FunkiFrame {
 
 		List<GUISettingField> settings = instruction.getGUISettings();
 		for (GUISettingField f : settings) {
-			if (!f.getData().canEdit()) {
+			if (!f.canEdit()) {
 				inputs.add(null);
 				continue;
 			}
@@ -102,7 +102,7 @@ public class InstructionInspectorFrame extends FunkiFrame {
 			str = f.getName() + ": ";
 			sx = x + 10;
 			sy = y + 20 + (i * 30);
-			if (f.getData().canEdit()) {
+			if (f.canEdit()) {
 				inputs.get(i).setLocation(sx + g.getFontMetrics().stringWidth(str), sy - 15);
 				inputs.get(i).setSize(100, 20);
 			} else {
@@ -174,8 +174,8 @@ public class InstructionInspectorFrame extends FunkiFrame {
 					
 					int i = Integer.parseInt(str);
 			
-					i = (int) Math.max(i, setting.getData().min());
-					i = (int) Math.min(i, setting.getData().max());
+					i = (int) Math.max(i, setting.getMin());
+					i = (int) Math.min(i, setting.getMax());
 					
 					setting.setValue(i);
 					input.setBackground(Color.white);
@@ -190,8 +190,8 @@ public class InstructionInspectorFrame extends FunkiFrame {
 					
 					double i = Double.parseDouble(str);
 					
-					i = Math.max(i, setting.getData().min());
-					i = Math.min(i, setting.getData().max());
+					i = Math.max(i, setting.getMin());
+					i = Math.min(i, setting.getMax());
 					
 					setting.setValue(i);
 					input.setBackground(Color.white);

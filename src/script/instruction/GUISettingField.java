@@ -44,10 +44,6 @@ public class GUISettingField {
 		}
 	}
 	
-	public GUISetting getData() {
-		return data;
-	}
-	
 	public Field getField() {
 		return field;
 	}
@@ -58,6 +54,22 @@ public class GUISettingField {
 	
 	public Instruction getInstruction() {
 		return instruction;
+	}
+	
+	public boolean canEdit() {
+		if ((field.getName().equals("endX") || field.getName().equals("endY")) && !instruction.isMove()) {
+			return false;
+		}
+		
+		return data.canEdit();
+	}
+	
+	public double getMin() {
+		return data.min();
+	}
+	
+	public double getMax() {
+		return data.max();
 	}
 
 }

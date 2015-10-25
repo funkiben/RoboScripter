@@ -16,7 +16,6 @@ public class Main {
 		int cy = RoboScripter.BOARD_SIZE / 2;
 
 		script.addInstruction(new TestInstruction(script, cx, cy));
-		script.getInstructions().get(0).setStart(cx, cy);
 		cx += 5000;
 		cy += 2500;
 		script.addInstruction(new TestInstruction(script, cx, cy));
@@ -40,8 +39,7 @@ public class Main {
 		
 		//scripter.getWindow().setScript(script);
 		
-		scripter.getScriptDB().add(script);
-		scripter.getScriptDB().save(script);
+		//scripter.getScriptDB().save(script);
 		
 	}
 
