@@ -32,7 +32,11 @@ public class Script implements Serializable {
 	}
 	
 	public void changeSaveFile(File file) {
-		if (this.saveFile != null) {
+		changeSaveFile(file, true);
+	}
+	
+	public void changeSaveFile(File file, boolean deletePrev) {
+		if (this.saveFile != null && deletePrev) {
 			saveFile.delete();
 		}
 		

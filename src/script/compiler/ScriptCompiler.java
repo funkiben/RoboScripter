@@ -124,7 +124,7 @@ public class ScriptCompiler {
 		
 		List<Instruction> instructions = script.getInstructions();
 		for (int i = 0; i < instructions.size(); i++) {
-			writer.println("\t\t" + " // Instruction " + i + " - " + instructions.get(i).getName());
+			writer.println("\t\t" + "// Instruction " + (i + 1) + " - " + instructions.get(i).getName());
 			
 			for (String code : instructions.get(i).getRunCode()) {
 				writer.println("\t\t" + code);

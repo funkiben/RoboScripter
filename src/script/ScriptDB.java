@@ -94,7 +94,7 @@ public class ScriptDB {
 		Script dupe = read(script.getSaveFile());
 		dupe.setName(dupe.getName() + "Copy");
 		
-		dupe.changeSaveFile(getFile(dupe));
+		dupe.changeSaveFile(getFile(dupe), false);
 		save(dupe);
 		
 		return dupe;
