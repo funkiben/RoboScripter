@@ -68,6 +68,8 @@ public class FunkiWindow extends JFrame {
 		for (FunkiFrame frame : frames) {
 			frame.draw(g, this);
 		}
+		
+		onDraw(g);
 	}
 	
 	private void invokeMouseEvents(int cx, int cy, int btn, int id) {
@@ -94,6 +96,10 @@ public class FunkiWindow extends JFrame {
 		} else if (id == 1) {
 			onReleaseKey(key);
 		}
+	}
+	
+	public void onDraw(Graphics g) {
+		
 	}
 	
 	public void onPressMouse(int x, int y, int button) {

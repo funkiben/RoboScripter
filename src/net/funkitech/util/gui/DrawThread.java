@@ -1,14 +1,12 @@
-package gui;
-
-import javax.swing.JPanel;
+package net.funkitech.util.gui;
 
 public class DrawThread extends Thread {
 	
-	private final JPanel panel;
+	private final FunkiWindow window;
 	private final int updateInterval;
 	
-	public DrawThread(JPanel panel, int updateInterval) {
-		this.panel = panel;
+	public DrawThread(FunkiWindow window, int updateInterval) {
+		this.window = window;
 		this.updateInterval = updateInterval;
 		
 		setDaemon(true);
@@ -19,7 +17,7 @@ public class DrawThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			panel.repaint();
+			window.getCanvas().repaint();
 			try {
 				Thread.sleep(1000 / updateInterval);
 			} catch (InterruptedException e) {

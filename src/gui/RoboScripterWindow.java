@@ -1,6 +1,7 @@
 package gui;
 
 import main.RoboScripter;
+import net.funkitech.util.gui.DrawThread;
 import net.funkitech.util.gui.FunkiWindow;
 import script.Script;
 
@@ -26,7 +27,7 @@ public class RoboScripterWindow extends FunkiWindow {
 		
 		addFrame(scriptDisplayFrame, instructionInspectorFrame, scriptDBFrame, scriptPropertiesFrame);
 		
-		new DrawThread(getCanvas(), 30);
+		new DrawThread(this, 30);
 	}
 	
 	public ScriptDisplayFrame getScriptDisplayFrame() {
