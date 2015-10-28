@@ -37,9 +37,9 @@ public class Main {
 		script.addInstruction(new TestInstruction(script, cx, cy));
 		script.addInstruction(new TestInstruction(script, cx, cy));
 		
-		//scripter.getWindow().setScript(script);
+		scripter.getScriptDB().save(script);
 		
-		//scripter.getScriptDB().save(script);
+		scripter.getWindow().getScriptDBFrame().updateList();
 		
 	}
 
