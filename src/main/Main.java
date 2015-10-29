@@ -38,6 +38,7 @@ public class Main {
 		script.addInstruction(new TestInstruction(script, cx, cy));
 		
 		scripter.getScriptDB().save(script);
+		scripter.getScriptDB().load();
 		
 		scripter.getWindow().getScriptDBFrame().updateList();
 		
