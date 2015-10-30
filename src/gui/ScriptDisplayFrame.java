@@ -107,17 +107,26 @@ public class ScriptDisplayFrame extends FunkiFrame {
 	}
 
 	private Instruction getInstructionAt(int cx, int cy) {
-		int sx, sy, ex, ey, s;
+		int sx, sy, ex, ey, s, w, h, x = 0, y = 0;
 
-		s = Math.min(getWidth(window), getHeight(window));
+		w = getWidth(window);
+		h = getHeight(window);
+		
+		s = Math.min(w, h);
+		
+		if (s == h) {
+			x = (w / 2) - (s / 2);
+		} else {
+			y = (h / 2) - (s / 2);
+		}
 
 		Instruction moveInstruction = null;
 
 		for (Instruction instruction : script.getInstructions()) {
-			sx = (int) (((double) instruction.getStartX() / RoboScripter.BOARD_SIZE) * s);
-			sy = (int) (((double) instruction.getStartY() / RoboScripter.BOARD_SIZE) * s);
-			ex = (int) (((double) instruction.getEndX() / RoboScripter.BOARD_SIZE) * s);
-			ey = (int) (((double) instruction.getEndY() / RoboScripter.BOARD_SIZE) * s);
+			sx = (int) (((double) instruction.getStartX() / RoboScripter.BOARD_SIZE) * s) + x;
+			sy = (int) (((double) instruction.getStartY() / RoboScripter.BOARD_SIZE) * s) + y;
+			ex = (int) (((double) instruction.getEndX() / RoboScripter.BOARD_SIZE) * s) + x;
+			ey = (int) (((double) instruction.getEndY() / RoboScripter.BOARD_SIZE) * s) +  y;
 
 			if (instruction.isMove()) {
 				if (isInLine(cx, cy, sx, sy, ex, ey)) {
