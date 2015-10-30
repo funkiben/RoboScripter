@@ -17,7 +17,7 @@ public class ScriptDisplayFrame extends FunkiFrame {
 	private final RoboScripterWindow window;
 
 	public ScriptDisplayFrame(RoboScripterWindow window) {
-		super("Board", 0.33f, 0.57f, 0.60f, 0.80f);
+		super("Board", 0.33f, 0.50f, 0.60f, 0.65f);
 		this.window = window;
 
 		setShowName(true);
@@ -47,6 +47,13 @@ public class ScriptDisplayFrame extends FunkiFrame {
 		Instruction instruction;
 
 		s = Math.min(w, h);
+		
+		if (s == h) {
+			x += (w / 2) - (s / 2);
+		} else {
+			y += (h / 2) - (s / 2);
+		}
+		
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(x, y, s, s);
 

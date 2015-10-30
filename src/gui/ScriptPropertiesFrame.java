@@ -25,7 +25,7 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 	private final JTextField nameInput;
 	
 	public ScriptPropertiesFrame(RoboScripterWindow window) {
-		super("Script Properties", 0.33f, 0.075f, 0.60f, 0.1f);
+		super("Script Properties", 0.33f, 0.075f, 0.60f, 0.10f);
 		setShowName(true);
 		
 		this.window = window;

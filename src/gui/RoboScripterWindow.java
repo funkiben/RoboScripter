@@ -14,6 +14,7 @@ public class RoboScripterWindow extends FunkiWindow {
 	private final InstructionInspectorFrame instructionInspectorFrame;
 	private final ScriptDBFrame scriptDBFrame;
 	private final ScriptPropertiesFrame scriptPropertiesFrame;
+	private final ToolsFrame toolsFrame;
 	
 	
 	public RoboScripterWindow(RoboScripter scripter) {
@@ -24,8 +25,9 @@ public class RoboScripterWindow extends FunkiWindow {
 		instructionInspectorFrame = new InstructionInspectorFrame(this);
 		scriptDBFrame = new ScriptDBFrame(this);
 		scriptPropertiesFrame = new ScriptPropertiesFrame(this);
+		toolsFrame = new ToolsFrame(this);
 		
-		addFrame(scriptDisplayFrame, instructionInspectorFrame, scriptDBFrame, scriptPropertiesFrame);
+		addFrame(scriptDisplayFrame, instructionInspectorFrame, scriptDBFrame, scriptPropertiesFrame, toolsFrame);
 		
 		new DrawThread(this, 30);
 	}
