@@ -29,7 +29,7 @@ public class ScriptDBFrame extends FunkiFrame {
 	private final JButton duplicateButton;
 
 	public ScriptDBFrame(RoboScripterWindow window) {
-		super("Scripts", 0.83f, 0.83f, 0.30f, 0.30f);
+		super("Scripts", 0.90f, 0.83f, 0.18f, 0.30f);
 		this.window = window;
 		scriptDB = window.getScripter().getScriptDB();
 		
@@ -52,7 +52,7 @@ public class ScriptDBFrame extends FunkiFrame {
 		refreshButton.addActionListener(new RefreshButtonActionListener());
 		window.getCanvas().add(refreshButton);
 		
-		loadButton = new JButton("Load Script");
+		loadButton = new JButton("Load");
 		loadButton.addActionListener(new LoadButtonActionListener());
 		window.getCanvas().add(loadButton);
 		
@@ -90,17 +90,17 @@ public class ScriptDBFrame extends FunkiFrame {
 		}
 
 		
-		refreshButton.setLocation(x + 20, y + h - 50);
-		refreshButton.setSize((w/2) - 40, 20);
+		refreshButton.setLocation(x + 10, y + h - 50);
+		refreshButton.setSize((w/2) - 20, 20);
 		
-		loadButton.setLocation(x + (w/2) + 20, y + h - 50);
-		loadButton.setSize((w/2) - 40, 20);
+		loadButton.setLocation(x + (w/2) + 10, y + h - 50);
+		loadButton.setSize((w/2) - 20, 20);
 		
-		addButton.setLocation(x + 20, y + h - 25);
-		addButton.setSize((w/2) - 40, 20);
+		addButton.setLocation(x + 10, y + h - 25);
+		addButton.setSize((w/2) - 20, 20);
 		
-		duplicateButton.setLocation(x + (w/2) + 20, y + h - 25);
-		duplicateButton.setSize((w/2) - 40, 20);
+		duplicateButton.setLocation(x + (w/2) + 10, y + h - 25);
+		duplicateButton.setSize((w/2) - 20, 20);
 		
 	}
 	

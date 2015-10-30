@@ -26,7 +26,7 @@ public class InstructionInspectorFrame extends FunkiFrame {
 	private final List<Component> inputs = new ArrayList<Component>();
 	
 	public InstructionInspectorFrame(RoboScripterWindow window) {
-		super("Instruction", 0.83f, 0.33f, 0.30f, 0.60f);
+		super("Instruction", 0.90f, 0.33f, 0.18f, 0.60f);
 		this.window = window;	
 		
 		setShowName(true);

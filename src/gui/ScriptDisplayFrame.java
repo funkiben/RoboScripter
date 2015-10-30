@@ -17,7 +17,7 @@ public class ScriptDisplayFrame extends FunkiFrame {
 	private final RoboScripterWindow window;
 
 	public ScriptDisplayFrame(RoboScripterWindow window) {
-		super("Board", 0.33f, 0.50f, 0.60f, 0.65f);
+		super("Board", 0.40f, 0.48f, 0.70f, 0.70f);
 		this.window = window;
 
 		setShowName(true);
