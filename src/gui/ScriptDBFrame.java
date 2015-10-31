@@ -121,8 +121,8 @@ public class ScriptDBFrame extends FunkiFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!scriptsList.isSelectionEmpty()) {
-				if (window.getScriptDisplayFrame().getScript() != null) {
-					scriptDB.save(window.getScriptDisplayFrame().getScript());
+				if (window.getScript() != null) {
+					scriptDB.save(window.getScript());
 				}
 				
 				Script script = scriptsList.getModel().getElementAt(scriptsList.getLeadSelectionIndex());
@@ -151,8 +151,8 @@ public class ScriptDBFrame extends FunkiFrame {
 		public void actionPerformed(ActionEvent e) {
 			int i = scriptsList.getSelectedIndex();
 			if (i != -1) {
-				if (window.getScriptDisplayFrame().getScript() != null) {
-					scriptDB.save(window.getScriptDisplayFrame().getScript());
+				if (window.getScript() != null) {
+					scriptDB.save(window.getScript());
 				}
 				
 				Script script = scriptDB.duplicate(scriptsList.getModel().getElementAt(i));

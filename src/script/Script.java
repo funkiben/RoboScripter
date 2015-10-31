@@ -59,8 +59,8 @@ public class Script implements Serializable {
 		instructions.add(index, instruction);
 	}
 	
-	public void removeInstruction(int index) {
-		instructions.remove(index);
+	public void removeInstruction(Instruction instruction) {
+		instructions.remove(instruction);
 	}
 	
 	@Override

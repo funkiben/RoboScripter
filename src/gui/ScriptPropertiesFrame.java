@@ -49,7 +49,7 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 		
 	}
 	
-	public void setScript(Script script) {
+	void setScript(Script script) {
 		this.script = script;
 		if (script != null) {
 			setName("Script - " + script.getName());
@@ -63,10 +63,6 @@ public class ScriptPropertiesFrame extends FunkiFrame {
 			exportButton.setVisible(false);
 			nameInput.setVisible(false);
 		}
-	}
-	
-	public Script getScript() {
-		return script;
 	}
 	
 	@Override

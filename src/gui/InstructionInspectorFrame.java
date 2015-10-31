@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
@@ -25,16 +26,46 @@ public class InstructionInspectorFrame extends FunkiFrame {
 	private final RoboScripterWindow window;
 	private final List<Component> inputs = new ArrayList<Component>();
 	
+	private final JButton deleteButton;
+	private final JButton setPosButton;
+	
+	private int prevX = 0;
+	private int prevY = 0;
+	
 	public InstructionInspectorFrame(RoboScripterWindow window) {
 		super("Instruction", 0.90f, 0.33f, 0.18f, 0.60f);
 		this.window = window;	
 		
 		setShowName(true);
 		
+		deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(new DeleteButtonEventListener());
+		deleteButton.setVisible(false);
+		window.getCanvas().add(deleteButton);
+		
+		setPosButton = new JButton("Set Position");
+		setPosButton.addActionListener(new SetPosButtonEventListener());
+		setPosButton.setVisible(false);
+		window.getCanvas().add(setPosButton);
+		
 	}
 	
 	public Instruction getInstruction() {
 		return instruction;
+	}
+	
+	public boolean isSettingPosition() {
+		return !setPosButton.isEnabled();
+	}
+	
+	public void doneSettingPosition() {
+		deleteButton.setEnabled(true);
+		setPosButton.setEnabled(true);
+	}
+	
+	public void cancelSettingPosition() {
+		instruction.setEnd(prevX, prevY);
+		doneSettingPosition();
 	}
 	
 	public void setInstruction(Instruction instruction) {
@@ -70,6 +101,13 @@ public class InstructionInspectorFrame extends FunkiFrame {
 				inputs.add(null);
 			}
 		}
+		
+		deleteButton.setVisible(true);
+		
+		if (instruction.isMove()) {
+			setPosButton.setVisible(true);
+		}
+		
 	}
 	
 	public void clearInstruction() {
@@ -81,7 +119,25 @@ public class InstructionInspectorFrame extends FunkiFrame {
 			}
 			window.getCanvas().remove(input);
 		}
+		deleteButton.setVisible(false);
+		setPosButton.setVisible(false);
 		inputs.clear();
+	}
+	
+	public void updateValues() {
+		List<GUISettingField> settings = instruction.getGUISettings();
+		Component input;
+		
+		for (int i = 0; i < inputs.size(); i++) {
+			input = inputs.get(i);
+			if (input != null) {
+				if (input instanceof JTextField) {
+					((JTextField) input).setText(String.valueOf(settings.get(i).getValue()));
+				} else if (input instanceof JCheckBox) {
+					((JCheckBox) input).setSelected((boolean) settings.get(i).getValue());
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -112,6 +168,12 @@ public class InstructionInspectorFrame extends FunkiFrame {
 			i++;
 		}
 
+		
+		deleteButton.setLocation(x + 10, y + h - 25);
+		deleteButton.setSize((w/2) - 20, 20);
+		
+		setPosButton.setLocation(x + (w/2) + 10, y + h - 25);
+		setPosButton.setSize((w/2) - 20, 20);
 		
 	}
 	
@@ -221,6 +283,29 @@ public class InstructionInspectorFrame extends FunkiFrame {
 		public void stateChanged(ChangeEvent e) {
 			setting.setValue(input.isSelected());
 		}
+		
+	}
+	
+	class DeleteButtonEventListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			window.getScript().removeInstruction(instruction);
+			clearInstruction();
+		}
+		
+	}
+	
+	class SetPosButtonEventListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			prevX = instruction.getEndX();
+			prevY = instruction.getEndY();
+			setPosButton.setEnabled(false);
+			deleteButton.setEnabled(false);
+		}
+		
 		
 	}
 	

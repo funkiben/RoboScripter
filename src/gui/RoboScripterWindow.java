@@ -9,8 +9,10 @@ public class RoboScripterWindow extends FunkiWindow {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private Script script;
+	
 	private final RoboScripter scripter;
-	private final ScriptDisplayFrame scriptDisplayFrame;
+	private final BoardFrame boardFrame;
 	private final InstructionInspectorFrame instructionInspectorFrame;
 	private final ScriptDBFrame scriptDBFrame;
 	private final ScriptPropertiesFrame scriptPropertiesFrame;
@@ -21,19 +23,19 @@ public class RoboScripterWindow extends FunkiWindow {
 		super("RoboScripter", 1200, 900);
 		this.scripter = scripter;
 		
-		scriptDisplayFrame = new ScriptDisplayFrame(this);
+		boardFrame = new BoardFrame(this);
 		instructionInspectorFrame = new InstructionInspectorFrame(this);
 		scriptDBFrame = new ScriptDBFrame(this);
 		scriptPropertiesFrame = new ScriptPropertiesFrame(this);
 		toolsFrame = new ToolsFrame(this);
 		
-		addFrame(scriptDisplayFrame, instructionInspectorFrame, scriptDBFrame, scriptPropertiesFrame, toolsFrame);
+		addFrame(boardFrame, instructionInspectorFrame, scriptDBFrame, scriptPropertiesFrame, toolsFrame);
 		
 		new DrawThread(this, 30);
 	}
 	
-	public ScriptDisplayFrame getScriptDisplayFrame() {
-		return scriptDisplayFrame;
+	public BoardFrame getBoardFrame() {
+		return boardFrame;
 	}
 	
 	public InstructionInspectorFrame getInstructionInspectorFrame() {
@@ -53,8 +55,13 @@ public class RoboScripterWindow extends FunkiWindow {
 	}
 	
 	public void setScript(Script script) {
-		scriptDisplayFrame.setScript(script);
+		this.script = script;
+		boardFrame.setScript(script);
 		scriptPropertiesFrame.setScript(script);
+	}
+	
+	public Script getScript() {
+		return script;
 	}
 
 }
