@@ -60,7 +60,11 @@ public class Script implements Serializable {
 	}
 	
 	public void removeInstruction(Instruction instruction) {
+		int index = instructions.indexOf(instruction);
 		instructions.remove(instruction);
+		
+		instructions.get(index).setPrevInstruction(instructions.get(index - 1));
+		
 	}
 	
 	@Override
